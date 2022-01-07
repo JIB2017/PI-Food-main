@@ -14,7 +14,6 @@ const recipes = async (request, response, next) => {
 
     // se buscan recetas
     if (name) {
-      
       let recipe = allRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
       );
@@ -71,6 +70,7 @@ const recipes = async (request, response, next) => {
               if (b.score > a.score) return 1;
               return 0;
             });
+        response.status(202).send(allRecipes);
       }
       if (filter === "API") {
         order === "A-Z"
@@ -96,6 +96,7 @@ const recipes = async (request, response, next) => {
               if (b.score > a.score) return 1;
               return 0;
             });
+        response.status(202).send(recipesInApi);
       }
       if (filter === "DB") {
         order === "A-Z"
@@ -121,6 +122,7 @@ const recipes = async (request, response, next) => {
               if (b.score > a.score) return 1;
               return 0;
             });
+        response.status(202).send(recipesInDb);
       }
     }
   } catch (error) {
@@ -130,7 +132,6 @@ const recipes = async (request, response, next) => {
 
 const recipeId = async (request, response, next) => {
   try {
-
     const allRecipes = await service.dataAPI();
     let id = request.params.id;
     let recipe = allRecipes.filter((el) => el.id == id);
