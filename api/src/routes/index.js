@@ -9,8 +9,9 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 router.get("/recipes", recipe.recipes);
-router.get("/recipes/", recipe.recipeId);
+router.get("/recipes/:id", recipe.recipeId);
 router.get("/types", type.types);
-router.post("recipe", recipe.create);
+router.post("/recipe", recipe.create);
+router.get("/paginacion", recipe.paginacion)
 
 module.exports = router;
