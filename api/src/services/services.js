@@ -30,6 +30,7 @@ const dataAPI = async (next) => {
           ),
           image: el.image,
           types: el.diets,
+          dishTypes: el.dishTypes
         };
       });
       // conncateno los pedidos a la api con el de la base de datos

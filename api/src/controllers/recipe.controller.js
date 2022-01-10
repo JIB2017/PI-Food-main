@@ -1,132 +1,110 @@
-const { DataTypes, UUIDV4 } = require("sequelize");
 const { Recipe, Type } = require("../db");
 const service = require("../services/services.js");
 
 const recipes = async (request, response, next) => {
-  try {
-    const allRecipes = await service.dataAPI();
-    const recipesInApi = allRecipes.filter((el) => !el.createdByUser);
-    const recipesInDb = allRecipes.filter((el) => el.createdByUser);
-    const name = request.query.name;
-    const filter = request.query.filter; // 'All' 'API' 'DB'
-    const order = request.query.order; // 'A-Z' 'Z-A' 'MIN-MAX' 'MAX-MIN'
-    const currentPage = request.query.currentPage; // 'current page'(number)
+  // recetas
+  const allRecipes = await service.dataAPI();
+  const recipesInApi = allRecipes.filter((el) => !el.createdByUser);
+  const recipesInDb = allRecipes.filter((el) => el.createdByUser);
+  // queries de búsquedas y filtros
+  const name = request.query.name;
+  const filter = request.query.filter; // 'All' 'API' 'DB'
+  const type = request.query.type; // tipos de dieta
+  // tipos de dieta
+  const typesInAll = allRecipes.filter((el) => el.types.includes(type));
+  const typesInApi = recipesInApi.filter((el) => el.types.includes(type));
+  const typesInDb = recipesInDb.filter((el) => el.types.includes(type));
+  // queries para el paginado
+  let page = request.query.page ? parseInt(request.query.page) : 1;
 
-    // se buscan recetas
+  const limit = 9;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  let aux;
+
+  const results = {};
+
+  try {
+    // si solo se busca por nombre
     if (name) {
+      results.filter = {
+        filter: "All",
+      };
+
       let recipe = allRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
       );
-      recipe.length > 0
-        ? response.status(202).send(recipe)
-        : response.status(500).send("The recipe was not found");
-    } else if (name && filter !== "All") {
-      // se filtra la búsqueda
-      // en la API
+      recipe.length
+        ? (aux = recipe)
+        : response.status(500).send("The recipes was not found");
+    }
+
+    // si solo se aplican filtros
+    if (!name && !type) {
+      if (filter === "All") {
+        aux = allRecipes;
+        results.filter = {
+          filter: "All",
+        };
+      }
       if (filter === "API") {
-        let searchInApi = recipe.filter((el) => !el.createdByUser);
-        response.status(202).send(searchInApi);
-      } else {
-        // en la base de datos
-        let searchInDb = recipe.filter((el) => el.createdByUser);
-        response.status(202).send(searchInDb);
+        aux = recipesInApi;
+        results.filter = {
+          filter: "API",
+        };
+      }
+      if (filter === "DB") {
+        aux = recipesInDb;
+        results.filter = {
+          filter: "DB",
+        };
       }
     }
 
-    if (!name && order === undefined) {
+    // si se filtran por tipos de dieta
+
+    if (!name && type && filter) {
+      results.types = {
+        type: type,
+      };
+      results.filter = {
+        filter: filter,
+      };
       if (filter === "All") {
-        response.status(202).send(allRecipes);
+        aux = typesInAll;
       }
       if (filter === "API") {
-        response.status(202).send(recipesInApi);
+        aux = typesInApi;
       }
       if (filter === "DB") {
-        response.status(202).send(recipesInDb);
+        aux = typesInDb;
       }
     }
 
-    if (!name && order !== undefined) {
-      if (filter === "All") {
-        order === "A-Z"
-          ? allRecipes.sort((a, b) => {
-              if (a.name > b.name) return 1;
-              if (b.name > a.name) return -1;
-              return 0;
-            })
-          : order === "Z-A"
-          ? allRecipes.sort((a, b) => {
-              if (a.name > b.name) return -1;
-              if (b.name > a.name) return 1;
-              return 0;
-            })
-          : order === "MIN-MAX"
-          ? allRecipes.sort((a, b) => {
-              if (a.score > b.score) return 1;
-              if (b.score > a.score) return -1;
-              return 0;
-            })
-          : allRecipes.sort((a, b) => {
-              if (a.score > b.score) return -1;
-              if (b.score > a.score) return 1;
-              return 0;
-            });
-        response.status(202).send(allRecipes);
-      }
-      if (filter === "API") {
-        order === "A-Z"
-          ? recipesInApi.sort((a, b) => {
-              if (a.name > b.name) return 1;
-              if (b.name > a.name) return -1;
-              return 0;
-            })
-          : order === "Z-A"
-          ? recipesInApi.sort((a, b) => {
-              if (a.name > b.name) return -1;
-              if (b.name > a.name) return 1;
-              return 0;
-            })
-          : order === "MIN-MAX"
-          ? recipesInApi.sort((a, b) => {
-              if (a.score > b.score) return 1;
-              if (b.score > a.score) return -1;
-              return 0;
-            })
-          : recipesInApi.sort((a, b) => {
-              if (a.score > b.score) return -1;
-              if (b.score > a.score) return 1;
-              return 0;
-            });
-        response.status(202).send(recipesInApi);
-      }
-      if (filter === "DB") {
-        order === "A-Z"
-          ? recipesInDb.sort((a, b) => {
-              if (a.name > b.name) return 1;
-              if (b.name > a.name) return -1;
-              return 0;
-            })
-          : order === "Z-A"
-          ? recipesInDb.sort((a, b) => {
-              if (a.name > b.name) return -1;
-              if (b.name > a.name) return 1;
-              return 0;
-            })
-          : order === "MIN-MAX"
-          ? recipesInDb.sort((a, b) => {
-              if (a.score > b.score) return 1;
-              if (b.score > a.score) return -1;
-              return 0;
-            })
-          : recipesInDb.sort((a, b) => {
-              if (a.score > b.score) return -1;
-              if (b.score > a.score) return 1;
-              return 0;
-            });
-        response.status(202).send(recipesInDb);
-      }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
     }
+
+    if (endIndex < aux.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    //console.log(aux)
+
+    console.log(`Total de recetas: ${allRecipes.length}`);
+    console.log(`Recetas pedidas: ${aux.length}`);
+    console.log(`Páginas en total: ${Math.ceil(aux.length / limit)}`);
+    console.log(`Página actual: ${page}`);
+    results.results = aux.slice(startIndex, endIndex);
+    console.log(startIndex, endIndex);
+    response.status(202).send(results);
   } catch (error) {
-    next(error);
+    response.status(500).json({ message: error.message });
   }
 };
 
@@ -141,7 +119,7 @@ const recipeId = async (request, response, next) => {
     // );
     // let recipe = allRecipes.filter((el) => el.id === id);
   } catch (error) {
-    next(error);
+    response.status(500).json({ message: error.message });
   }
 };
 
@@ -171,4 +149,36 @@ const create = async (request, response, next) => {
   }
 };
 
-module.exports = { recipes, recipeId, create };
+const pagination = async (request, response, next) => {
+  const allRecipes = await service.dataAPI();
+  const page = parseInt(request.query.page); // 1
+  const limit = parseInt(request.query.limit); // 9
+
+  const startIndex = (page - 1) * limit; // (1 - 1) * 9 = 0
+  const endIndex = page * limit; // 1 * 9 = 9
+
+  const results = {};
+
+  if (endIndex < allRecipes.length) {
+    results.next = {
+      page: page + 1,
+      limit: limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    results.previous = {
+      page: page - 1,
+      limit: limit,
+    };
+  }
+  try {
+    results.results = allRecipes.slice(startIndex, endIndex); // model.slice(startIndex, endIndex)
+    response.paginatedResults = results;
+    response.json(response.paginatedResults);
+  } catch (e) {
+    response.status(500).json({ message: e.message });
+  }
+};
+
+module.exports = { recipes, recipeId, create, pagination };
