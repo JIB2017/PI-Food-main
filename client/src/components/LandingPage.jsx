@@ -5,8 +5,8 @@ export default function LandingPage() {
   return (
     <div>
       <h1>Bienvenidos a Henry Food</h1>
-      <div className={styles.btn}>
-        <Link to="/home">Ingresar</Link>
+      <div >
+        <Link to="/home"><button className={styles.btn}>Ingresar</button></Link>
       </div>
     </div>
   );

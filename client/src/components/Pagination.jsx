@@ -1,22 +1,22 @@
 import React from "react";
 import styles from "./Pagination.module.css";
 
-export default function Pagination({ totalPages, page }) {
+export default function Pagination( totalPages, page ) {
   for (let i = 0; i < totalPages; i++) {
     return (
-      <div>
+      <nav>
         {page === i ? (
           <li className={styles.pagination} key={i+1}>
-            <button className={styles.active} onClick={() => {}}>
+            <button >
               {i + 1}
             </button>
           </li>
         ) : (
           <li>
-            <button onClick={() => {}}>{i + 1}</button>
+            <button >{i + 1}</button>
           </li>
         )}
-      </div>
+      </nav>
     );
   }
 }

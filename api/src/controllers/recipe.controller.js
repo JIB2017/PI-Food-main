@@ -107,20 +107,35 @@ const recipeId = async (request, response, next) => {
     const recipe = await axios.get(
       `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
     );
-    const res = await recipe.data.map((el) => {
-      return {
-        id: el.id,
-        name: el.title,
-        image: el.image,
-        dishTypes: el.dishTypes,
-        types: el.diets,
-        resume: el.summary,
-        score: el.spoonacularScore,
-        level: el.healthScore,
-        steps: el.analyzedInstructions.steps,
-      };
-    });
-    response.status(202).json(res);
+    // const res = await recipe.data.map((el) => {
+    //   return {
+    //     id: el.id,
+    //     name: el.title,
+    //     image: el.image,
+    //     dishTypes: el.dishTypes,
+    //     types: el.diets,
+    //     resume: el.summary,
+    //     score: el.spoonacularScore,
+    //     level: el.healthScore,
+    //     steps: el.analyzedInstructions.steps,
+    //   };
+    // });
+    const res = {
+      id: recipe.data.id,
+      name: recipe.data.title,
+      image: recipe.data.image,
+      dishTypes: recipe.data.dishTypes,
+      types: recipe.data.diets,
+      resume: recipe.data.summary,
+      score: recipe.data.spoonacularScore,
+      level: recipe.data.healthScore,
+      steps: recipe.data.analyzedInstructions.steps
+        ? recipe.data.analyzedInstructions.steps
+        : "Sin datos...",
+    };
+    res
+      ? response.status(200).json(res)
+      : response.status(404).send("Algo pasó con el id");
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

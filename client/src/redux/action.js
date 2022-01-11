@@ -18,7 +18,7 @@ export function getRecipesName(name, filter, page) {
 
 export function getRecipe(id) {
   return function (dispatch) {
-    return fetch(`http://localhost:3001/${id}`)
+    return fetch(`http://localhost:3001/recipes/${id}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch({ type: "GET_RECIPE", payload: json });

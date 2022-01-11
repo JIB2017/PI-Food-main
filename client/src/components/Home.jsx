@@ -8,7 +8,7 @@ import {
   // addRecipe,
 } from "../redux/action";
 import Card from "./Card";
-import Pagination from "./Pagination";
+// import Pagination from "./Pagination";
 
 export default function Home() {
   const recipes = useSelector((state) => state.recipes);
@@ -23,7 +23,7 @@ export default function Home() {
     <div>
       <h1>Henry Food</h1>
       <h3>Lista de recetas</h3>
-      {<Pagination totalPages={recipes.totalPages} page={recipes.actualPage}/>}
+      {/* {<Pagination totalPages={recipes.totalPages} page={recipes.actualPage}/>} */}
       {console.log(`${recipes.totalPages} ${recipes.actualPage}`)}
       {recipes.results?.map((receta) => {
         return (
