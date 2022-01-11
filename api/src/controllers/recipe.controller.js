@@ -1,9 +1,12 @@
 const { Recipe, Type } = require("../db");
 const service = require("../services/services.js");
+const axios = require("axios");
+const { API_KEY } = process.env;
 
 const recipes = async (request, response, next) => {
   // recetas
   const allRecipes = await service.dataAPI();
+  const searchedRecipes = await service.allDataAPI();
   const recipesInApi = allRecipes.filter((el) => !el.createdByUser);
   const recipesInDb = allRecipes.filter((el) => el.createdByUser);
   // queries de búsquedas y filtros
@@ -29,7 +32,7 @@ const recipes = async (request, response, next) => {
     if (name) {
       results.filter = "All";
 
-      let recipe = allRecipes.filter((el) =>
+      let recipe = searchedRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
       );
       recipe.length
@@ -97,15 +100,31 @@ const recipes = async (request, response, next) => {
 };
 
 const recipeId = async (request, response, next) => {
+  // const recipe = await service.recipeId();
+  // try {
+  //   response.status(202).send(recipe);
+  // } catch (error) {
+  //   response.json({ message: error.message });
+  // }
   try {
-    const allRecipes = await service.dataAPI();
-    let id = request.params.id;
-    let recipe = allRecipes.filter((el) => el.id == id);
-    response.status(202).send(recipe);
-    // const recipeId = await axios.get(
-    //   `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
-    // );
-    // let recipe = allRecipes.filter((el) => el.id === id);
+    const id = request.params.id;
+    const recipe = await axios.get(
+      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
+    );
+    const res = await recipe.data.map((el) => {
+      return {
+        id: el.id,
+        name: el.title,
+        image: el.image,
+        dishTypes: el.dishTypes,
+        types: el.diets,
+        resume: el.summary,
+        score: el.spoonacularScore,
+        level: el.healthScore,
+        steps: el.analyzedInstructions.steps,
+      };
+    });
+    response.status(202).json(res);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -169,4 +188,4 @@ const pagination = async (request, response, next) => {
   }
 };
 
-module.exports = { recipes, recipeId, create, pagination };
+module.exports = { recipes, recipeId, create };
