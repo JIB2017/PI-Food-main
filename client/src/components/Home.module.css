@@ -1,0 +1,10 @@
+h1 {
+    color: #fff;
+    margin: auto;
+    text-align: center;
+    font-size: 6rem;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 20px #00cbe6, 0 0 10px #00cbe6,
+      0 0 10px #00cbe6, 0 0 40px #00cbe6, 0 0 10px #00cbe6;
+    position: relative;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  }

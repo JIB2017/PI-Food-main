@@ -27,9 +27,7 @@ const recipes = async (request, response, next) => {
   try {
     // si solo se busca por nombre
     if (name) {
-      results.filter = {
-        filter: "All",
-      };
+      results.filter = "All";
 
       let recipe = allRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
@@ -41,35 +39,25 @@ const recipes = async (request, response, next) => {
 
     // si solo se aplican filtros
     if (!name && !type) {
-      if (filter === "All") {
+      if (filter === "All" || results.filter == "All") {
         aux = allRecipes;
-        results.filter = {
-          filter: "All",
-        };
+        results.filter = "All";
       }
-      if (filter === "API") {
+      if (filter === "API" || results.filter == "API") {
         aux = recipesInApi;
-        results.filter = {
-          filter: "API",
-        };
+        results.filter = "API";
       }
-      if (filter === "DB") {
+      if (filter === "DB" || results.filter == "DB") {
         aux = recipesInDb;
-        results.filter = {
-          filter: "DB",
-        };
+        results.filter = "DB";
       }
     }
 
     // si se filtran por tipos de dieta
 
     if (!name && type && filter) {
-      results.types = {
-        type: type,
-      };
-      results.filter = {
-        filter: filter,
-      };
+      results.types = type;
+      results.filter = filter;
       if (filter === "All") {
         aux = typesInAll;
       }
