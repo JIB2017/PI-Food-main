@@ -73,18 +73,14 @@ const recipes = async (request, response, next) => {
     }
 
     if (startIndex > 0) {
-      results.previous = {
-        page: page - 1,
-        limit: limit,
-      };
+      results.previous = page - 1;
     }
 
     if (endIndex < aux.length) {
-      results.next = {
-        page: page + 1,
-        limit: limit,
-      };
+      results.next = page + 1;
     }
+    results.totalPages = Math.ceil(aux.length / limit);
+    results.actualPage = page;
     //console.log(aux)
 
     console.log(`Total de recetas: ${allRecipes.length}`);
