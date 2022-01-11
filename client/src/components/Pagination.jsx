@@ -6,8 +6,8 @@ export default function Pagination( totalPages, page ) {
     return (
       <nav>
         {page === i ? (
-          <li className={styles.pagination} key={i+1}>
-            <button >
+          <li className="" key={i+1}>
+            <button>
               {i + 1}
             </button>
           </li>
