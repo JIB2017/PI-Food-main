@@ -1,8 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getRecipesName } from "../redux/action";
-import styles from "";
+// import styles from "";
 
 export default function SearchBar() {
   const [input, setInput] = useState("");
@@ -10,12 +9,13 @@ export default function SearchBar() {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setInput(e);
+    setInput(e.target.value);
+    console.log(e.target.value)
   };
 
   const handleSubmit = (e) => {
       e.preventDefault();
-    if (input === "") {
+    if (input !== "") {
       dispatch(getRecipesName(input));
       setInput("");
     } else {

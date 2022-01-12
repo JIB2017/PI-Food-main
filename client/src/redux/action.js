@@ -1,6 +1,6 @@
-export function getAllRecipes(filter, page) {
+export function getAllRecipes(type, page) {
   return function (dispatch) {
-    return fetch(`http://localhost:3001/recipes?filter=${filter}`)
+    return fetch(`http://localhost:3001/recipes?type=${type}&page=${page}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch({ type: "GET_ALL_RECIPES", payload: json });
@@ -35,6 +35,20 @@ export function getTypes() {
       .then((json) => {
         dispatch({ type: "GET_TYPES", payload: json });
       });
+  };
+}
+
+export function orderByAlphabet(payload) {
+  return {
+    type: "ORDER_BY_ALPHABET",
+    payload: payload,
+  };
+}
+
+export function orderByScore(payload) {
+  return {
+    type: "ORDER_BY_SCORE",
+    payload: payload,
   };
 }
 

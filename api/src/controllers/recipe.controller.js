@@ -6,17 +6,10 @@ const { API_KEY } = process.env;
 const recipes = async (request, response, next) => {
   // recetas
   const allRecipes = await service.dataAPI();
-  const searchedRecipes = await service.allDataAPI();
-  const recipesInApi = allRecipes.filter((el) => !el.createdByUser);
-  const recipesInDb = allRecipes.filter((el) => el.createdByUser);
+  // const searchedRecipes = await service.allDataAPI();
   // queries de búsquedas y filtros
   const name = request.query.name;
-  const filter = request.query.filter; // 'All' 'API' 'DB'
   const type = request.query.type; // tipos de dieta
-  // tipos de dieta
-  const typesInAll = allRecipes.filter((el) => el.types.includes(type));
-  const typesInApi = recipesInApi.filter((el) => el.types.includes(type));
-  const typesInDb = recipesInDb.filter((el) => el.types.includes(type));
   // queries para el paginado
   let page = request.query.page ? parseInt(request.query.page) : 1;
 
@@ -29,47 +22,28 @@ const recipes = async (request, response, next) => {
 
   try {
     // si solo se busca por nombre
-    if (name) {
-      results.filter = "All";
-
-      let recipe = searchedRecipes.filter((el) =>
+    if (name && !type) {
+      let recipe = allRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
       );
-      recipe.length
-        ? (aux = recipe)
-        : response.status(500).send("The recipes was not found");
+      recipe.length ? (aux = recipe) : next();
     }
-
-    // si solo se aplican filtros
-    if (!name && !type) {
-      if (filter === "All" || results.filter == "All") {
-        aux = allRecipes;
-        results.filter = "All";
-      }
-      if (filter === "API" || results.filter == "API") {
-        aux = recipesInApi;
-        results.filter = "API";
-      }
-      if (filter === "DB" || results.filter == "DB") {
-        aux = recipesInDb;
-        results.filter = "DB";
-      }
+    // si solo se pide el filtro
+    if (type && !name) {
+      let diets = allRecipes.filter((el) => el.types.includes(type));
+      diets.length ? (aux = diets) : next();
     }
-
-    // si se filtran por tipos de dieta
-
-    if (!name && type && filter) {
-      results.types = type;
-      results.filter = filter;
-      if (filter === "All") {
-        aux = typesInAll;
-      }
-      if (filter === "API") {
-        aux = typesInApi;
-      }
-      if (filter === "DB") {
-        aux = typesInDb;
-      }
+    // si se piden ambas cosas
+    if (type && name) {
+      let recipe = allRecipes.filter((el) =>
+        el.name.toLowerCase().includes(name.toLowerCase())
+      );
+      let diets = recipe.filter((el) => el.types.includes(type));
+      diets.length ? (aux = diets) : next();
+    }
+    // ningun caso, me traigo todas
+    if (!type && !name) {
+      aux = allRecipes;
     }
 
     if (startIndex > 0) {
@@ -88,8 +62,10 @@ const recipes = async (request, response, next) => {
     console.log(`Páginas en total: ${Math.ceil(aux.length / limit)}`);
     console.log(`Página actual: ${page}`);
     results.results = aux.slice(startIndex, endIndex);
-    console.log(startIndex, endIndex);
-    response.status(202).send(results);
+    console.log(`Comienzo: ${startIndex} Final: ${endIndex}`);
+    console.log(`Filtrado por: '${type}'`);
+    console.log(`Los que incluyan: '${name}'`);
+    response.status(200).send(results);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -164,38 +140,6 @@ const create = async (request, response, next) => {
     response.send("Receta Creada");
   } catch (error) {
     next(error);
-  }
-};
-
-const pagination = async (request, response, next) => {
-  const allRecipes = await service.dataAPI();
-  const page = parseInt(request.query.page); // 1
-  const limit = parseInt(request.query.limit); // 9
-
-  const startIndex = (page - 1) * limit; // (1 - 1) * 9 = 0
-  const endIndex = page * limit; // 1 * 9 = 9
-
-  const results = {};
-
-  if (endIndex < allRecipes.length) {
-    results.next = {
-      page: page + 1,
-      limit: limit,
-    };
-  }
-
-  if (startIndex > 0) {
-    results.previous = {
-      page: page - 1,
-      limit: limit,
-    };
-  }
-  try {
-    results.results = allRecipes.slice(startIndex, endIndex); // model.slice(startIndex, endIndex)
-    response.paginatedResults = results;
-    response.json(response.paginatedResults);
-  } catch (e) {
-    response.status(500).json({ message: e.message });
   }
 };
 
