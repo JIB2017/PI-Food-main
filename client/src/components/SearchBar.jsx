@@ -17,7 +17,6 @@ export default function SearchBar() {
       e.preventDefault();
     if (input !== "") {
       dispatch(getRecipesName(input));
-      setInput("");
     } else {
       alert("No puede estar vacío");
     }

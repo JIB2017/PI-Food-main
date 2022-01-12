@@ -27,41 +27,43 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         types: action.payload,
       };
+    case "FILTER_BY_TYPE":
+      let filtered = state.recipes.results.filter((el) =>
+        el.types.includes(action.payload)
+      );
+      return {
+        ...state,
+        recipes: filtered,
+      };
     case "ORDER_BY_ALPHABET":
-      let aux = state.recipes;
       let ordering =
         action.payload === "A-Z"
-          ? aux.sort((a, b) => {
-              if (a.results.name > b.results.name) return 1;
-              if (b.results.name > a.results.name) return -1;
-              return 0;
+          ? state.recipes.results.sort((a, b) => {
+              return a.name - b.name;
             })
-          : aux.sort((a, b) => {
-              if (a.results.name > b.results.name) return -1;
-              if (b.results.name > a.results.name) return 1;
-              return 0;
+          : state.recipes.results.sort((a, b) => {
+              return b.name - a.name;
             });
       return {
         ...state,
-        auxRecipes: ordering,
+        recipes: ordering,
       };
     case "ORDER_BY_SCORE":
-      let aux = state.auxRecipes;
-      let ordering =
+      let ordering2 =
         action.payload === "MIN-MAX"
-          ? aux.sort((a, b) => {
-              if (a.results.score > b.results.score) return 1;
-              if (b.results.score > a.results.score) return -1;
+          ? state.recipes.results.sort((a, b) => {
+              if (a.score > b.score) return 1;
+              if (b.score > a.score) return -1;
               return 0;
             })
-          : aux.sort((a, b) => {
-              if (a.results.score > b.results.score) return -1;
-              if (b.results.score > a.results.score) return 1;
+          : state.recipes.results.sort((a, b) => {
+              if (a.score > b.score) return -1;
+              if (b.score > a.score) return 1;
               return 0;
             });
       return {
         ...state,
-        auxRecipes: ordering,
+        recipes: ordering2,
       };
     case "ADD_RECIPE":
       return {

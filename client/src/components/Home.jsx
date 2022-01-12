@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   getAllRecipes,
   getTypes,
@@ -8,6 +9,7 @@ import {
 } from "../redux/action";
 import Card from "./Card";
 import SearchBar from "./SearchBar";
+import styles from "./Home.module.css";
 // import Pagination from "./Pagination";
 
 export default function Home() {
@@ -22,15 +24,20 @@ export default function Home() {
     e.preventDefault();
     const value = e.target.value;
     if (value !== "") {
-      dispatch(getAllRecipes(value, recipes.actualPage));
+      dispatch(filterByType(value));
     }
+  };
+
+  const refresh = (e) => {
+    e.preventDefault();
+    dispatch(getAllRecipes());
   };
 
   const handleOrder = (e) => {
     e.preventDefault();
     const value = e.target.value;
     if (value !== "") {
-      dispatch(orderByAlphabet(value, recipes.actualPage));
+      dispatch(orderByAlphabet(value));
     }
   };
 
@@ -38,12 +45,12 @@ export default function Home() {
     e.preventDefault();
     const value = e.target.value;
     if (value !== "") {
-      dispatch(orderByScore(value, recipes.actualPage));
+      dispatch(orderByScore(value));
     }
   };
 
   useEffect(() => {
-    dispatch(getAllRecipes(type, page));
+    dispatch(getAllRecipes());
   }, [dispatch]);
 
   useEffect(() => {
@@ -53,8 +60,11 @@ export default function Home() {
   return (
     <div>
       <SearchBar />
+      <Link to="/form">
+        <button>Crear receta</button>
+      </Link>
       <h1>Henry Food</h1>
-      <h3>Lista de recetas</h3>
+      <button onClick={refresh}>Refresh</button>
       <select onChange={handleTypes}>
         <option value="">Select your diet</option>
         {types?.map((el) => {
@@ -75,6 +85,7 @@ export default function Home() {
         <option value="MIN-MAX">MIN-MAX</option>
         <option value="MAX-MIN">MAX-MIN</option>
       </select>
+      <h3>Lista de recetas</h3>
       {recipes.results?.map((receta) => {
         return (
           <div key={receta.id}>

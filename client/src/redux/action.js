@@ -38,6 +38,13 @@ export function getTypes() {
   };
 }
 
+export function filterByType() {
+  return {
+    type: "FILTER_BY_TYPE",
+    payload: payload,
+  };
+}
+
 export function orderByAlphabet(payload) {
   return {
     type: "ORDER_BY_ALPHABET",
