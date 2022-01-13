@@ -6,6 +6,7 @@ import {
   getTypes,
   orderByAlphabet,
   orderByScore,
+  filterByType,
 } from "../redux/action";
 import Card from "./Card";
 import SearchBar from "./SearchBar";
@@ -16,9 +17,8 @@ export default function Home() {
   const recipes = useSelector((state) => state.recipes);
   const types = useSelector((state) => state.types);
   const dispatch = useDispatch();
-  const [type, setType] = useState("");
+  const [order, setOrder] = useState("");
   const [page, setPage] = useState(1);
-  // const [state, setState] = useState("");
 
   const handleTypes = (e) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ export default function Home() {
     if (value !== "") {
       dispatch(filterByType(value));
     }
+    setOrder(`Ordenado ${e.target.value}`);
   };
 
   const refresh = (e) => {
@@ -39,6 +40,7 @@ export default function Home() {
     if (value !== "") {
       dispatch(orderByAlphabet(value));
     }
+    setOrder(`Ordenado ${e.target.value}`);
   };
 
   const handleScore = (e) => {
@@ -47,6 +49,7 @@ export default function Home() {
     if (value !== "") {
       dispatch(orderByScore(value));
     }
+    setOrder(`Ordenado ${e.target.value}`);
   };
 
   useEffect(() => {
@@ -86,21 +89,21 @@ export default function Home() {
         <option value="MAX-MIN">MAX-MIN</option>
       </select>
       <h3>Lista de recetas</h3>
-      {recipes.results?.map((receta) => {
+      {recipes?.map((receta) => {
         return (
           <div key={receta.id}>
             <Card
               id={receta.id}
               image={receta.image}
               name={receta.name}
-              types={receta.types}
-              key={receta.id}
+              types={receta.types ? receta.types : receta.types.map(el => el.name)}
+              score={receta.score}
             />
           </div>
         );
       })}
       {/* {<Pagination totalPages={recipes.totalPages} page={recipes.actualPage}/>} */}
-      {console.log(`${recipes.totalPages} ${recipes.actualPage}`)}
+      {console.log(`${recipes.length}`)}
     </div>
   );
 }

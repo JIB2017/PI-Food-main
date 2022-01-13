@@ -1,6 +1,7 @@
 const initialState = {
   recipes: [],
   auxRecipes: [],
+  favourites: [],
   types: [],
 };
 
@@ -28,7 +29,7 @@ export default function rootReducer(state = initialState, action) {
         types: action.payload,
       };
     case "FILTER_BY_TYPE":
-      let filtered = state.recipes.results.filter((el) =>
+      let filtered = state.recipes.filter((el) =>
         el.types.includes(action.payload)
       );
       return {
@@ -37,26 +38,30 @@ export default function rootReducer(state = initialState, action) {
       };
     case "ORDER_BY_ALPHABET":
       let ordering =
-        action.payload === "A-Z"
-          ? state.recipes.results.sort((a, b) => {
-              return a.name - b.name;
-            })
-          : state.recipes.results.sort((a, b) => {
-              return b.name - a.name;
-            });
+      action.payload === "A-Z"
+      ? state.recipes.sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (b.name > a.name) return -1;
+          return 0;
+        })
+      : state.recipes.sort((a, b) => {
+          if (a.name > b.name) return -1;
+          if (b.name > a.name) return 1;
+          return 0;
+        });
       return {
         ...state,
-        recipes: ordering,
+        auxRecipes: ordering,
       };
     case "ORDER_BY_SCORE":
       let ordering2 =
         action.payload === "MIN-MAX"
-          ? state.recipes.results.sort((a, b) => {
+          ? state.recipes.sort((a, b) => {
               if (a.score > b.score) return 1;
               if (b.score > a.score) return -1;
               return 0;
             })
-          : state.recipes.results.sort((a, b) => {
+          : state.recipes.sort((a, b) => {
               if (a.score > b.score) return -1;
               if (b.score > a.score) return 1;
               return 0;
@@ -67,8 +72,14 @@ export default function rootReducer(state = initialState, action) {
       };
     case "ADD_RECIPE":
       return {
-        auxRecipes: action.payload,
+        ...state,
       };
+    case "ADD_FAVOURITE":
+      let fav = state.recipes.filter(el => el)
+      return {
+        ...state,
+        favourites: fav,
+      }
     default:
       return state;
   }

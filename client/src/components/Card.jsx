@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Card({ id, image, name, types }) {
+export default function Card({ id, image, name, types, score }) {
   return (
     <div key={id}>
       <Link to={`/${id}`}>
@@ -9,6 +9,7 @@ export default function Card({ id, image, name, types }) {
       </Link>
       <h4>{name}</h4>
       <p>{types}</p>
+      <p>{score}</p>
     </div>
   );
 }

@@ -1,6 +1,8 @@
-export function getAllRecipes(type, page) {
+// import axios from "axios"
+
+export function getAllRecipes() {
   return function (dispatch) {
-    return fetch(`http://localhost:3001/recipes?type=${type}&page=${page}`)
+    return fetch(`http://localhost:3001/recipes`)
       .then((res) => res.json())
       .then((json) => {
         dispatch({ type: "GET_ALL_RECIPES", payload: json });
@@ -38,7 +40,7 @@ export function getTypes() {
   };
 }
 
-export function filterByType() {
+export function filterByType(payload) {
   return {
     type: "FILTER_BY_TYPE",
     payload: payload,
@@ -59,9 +61,16 @@ export function orderByScore(payload) {
   };
 }
 
-export function addRecipe(payload) {
+// export function addRecipe(payload) {
+//   return async function (dispatch) {
+//     let res = axios.post("http://localhost:3001", payload);
+//     return res;
+//   };
+// }
+
+export function addFavourite(payload) {
   return {
-    type: "ADD_RECIPE",
-    payload,
+    type: "ADD_FAVOURITE",
+    payload: payload,
   };
 }

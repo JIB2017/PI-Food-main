@@ -66,10 +66,10 @@ const recipeId = async (request, response, next) => {
 };
 
 const create = async (request, response, next) => {
-  try {
-    let { id, name, resume, score, level, steps, createdByUser, types } =
-      request.body;
+  let { id, name, resume, score, level, steps, createdByUser, types } =
+    request.body;
 
+  try {
     let recipeCreated = await Recipe.create({
       id: id,
       name: name,
@@ -80,14 +80,18 @@ const create = async (request, response, next) => {
       createdByUser: createdByUser,
     });
 
+    // let formated= Array.isArray(types) ? types: [types];
+
     let recipeType = await Type.findAll({
       where: { name: types },
     });
+    // console.log(types);
+    console.log(types);
 
-    recipeCreated.addType(recipeType);
-    response.send("Receta Creada");
+    await recipeCreated.addType(recipeType);
+    response.send(types);
   } catch (error) {
-    next(error);
+    response.status(500).json({ message: error.message });
   }
 };
 
