@@ -54,11 +54,12 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getAllRecipes());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(getTypes());
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getTypes());
+  // }, [dispatch]);
 
   return (
     <div>
