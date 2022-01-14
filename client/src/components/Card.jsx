@@ -7,9 +7,9 @@ export default function Card({ id, image, name, types, score }) {
       <Link to={`/${id}`}>
         <img src={image} alt={name} />
       </Link>
-      <h4>{name}</h4>
-      <p>{types}</p>
-      <p>{score}</p>
+      <h4>{`Recipe: ${name}`}</h4>
+      <h4>{`Types diets: ${types}`}</h4>
+      <h4>{`Spoonacular score: ${score ? score : score}`}</h4>
     </div>
   );
 }

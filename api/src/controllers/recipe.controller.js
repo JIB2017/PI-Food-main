@@ -4,35 +4,41 @@ const axios = require("axios");
 const { API_KEY } = process.env;
 
 const recipes = async (request, response, next) => {
-  // recetas
+  try {
+    // recetas
   const allRecipes = await service.dataAPI();
   // queries de búsquedas
   const name = request.query.name;
-  // queries para el paginado
-  // const limit = 9;
-  // const startIndex = (page - 1) * limit;
-  // const endIndex = page * limit;
-  // const pages = Math.ceil(aux.length / limit);
-  // const paging = totalPages.slice(startIndex, endIndex);
-  // const results = {};
-  // let aux;
-  // if (startIndex > 0) {
-  //   results.previous = page - 1;
-  // }
-
-  // if (endIndex < aux.length) {
-  //   results.next = page + 1;
-  // }
-  try {
-    // si solo se busca por nombre
+     // si solo se busca por nombre
     if (name) {
-      const recipe = allRecipes.filter((el) =>
+      const recipeName = allRecipes.filter((el) =>
         el.name.toLowerCase().includes(name.toLowerCase())
       );
-      recipe.length ? response.status(200).send(recipe) : next();
+      if (recipeName.length) {
+        response.status(200).send(recipeName);
+      }
     } else {
       response.status(200).send(allRecipes);
     }
+
+    // if (order) {
+    //   order === "A-Z"
+    //     ? recipes.sort((a, b) => {
+    //         if (a.name > b.name) return 1;
+    //         if (b.name > a.name) return -1;
+    //         return 0;
+    //       })
+    //     : recipes.sort((a, b) => {
+    //         if (a.name > b.name) return 1;
+    //         if (b.name > a.name) return -1;
+    //         return 0;
+    //       });
+    //   response.status(200).send(recipes);
+    // }
+
+    // if (!name && !order) {
+    //   response.status(200).send(allRecipes);
+    // }
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -54,7 +60,7 @@ const recipeId = async (request, response, next) => {
       score: recipe.data.spoonacularScore,
       level: recipe.data.healthScore,
       steps: recipe.data.analyzedInstructions.steps
-        ? recipe.data.analyzedInstructions.steps
+        ? recipe.data.analyzedInstructions.steps.flat()
         : "Sin datos...",
     };
     res
@@ -66,10 +72,10 @@ const recipeId = async (request, response, next) => {
 };
 
 const create = async (request, response, next) => {
-  let { id, name, resume, score, level, steps, createdByUser, types } =
-    request.body;
-
   try {
+    let { id, name, resume, score, level, steps, createdByUser, types } =
+      request.body;
+
     let recipeCreated = await Recipe.create({
       id: id,
       name: name,
@@ -89,7 +95,7 @@ const create = async (request, response, next) => {
     console.log(types);
 
     await recipeCreated.addType(recipeType);
-    response.send(types);
+    response.json(types);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

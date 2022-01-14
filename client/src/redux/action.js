@@ -1,4 +1,4 @@
-// import axios from "axios"
+import axios from "axios";
 
 export function getAllRecipes() {
   return function (dispatch) {
@@ -61,16 +61,29 @@ export function orderByScore(payload) {
   };
 }
 
-// export function addRecipe(payload) {
-//   return async function (dispatch) {
-//     let res = axios.post("http://localhost:3001", payload);
-//     return res;
-//   };
-// }
+export function addRecipe(payload) {
+  return async function (dispatch) {
+    const json = axios.post("http://localhost:3001/recipe", payload);
+    return json;
+  };
+}
 
-export function addFavourite(payload) {
+export function filterByApi(payload) {
   return {
-    type: "ADD_FAVOURITE",
+    type: "FILTER_BY_API",
+    payload: payload,
+  };
+}
+
+export function getDishes() {
+  return {
+    type: "GET_DISHES",
+  };
+}
+
+export function filterByDish(payload) {
+  return {
+    type: "FILTER_BY_DISH",
     payload: payload,
   };
 }

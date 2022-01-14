@@ -18,13 +18,15 @@ export default function DetailRecipe() {
     <div>
       <div key={recipeId.id}>
         <img src={recipeId.image} alt={recipeId.name} width="300px" height="300px"/>
-        <h3>{recipeId.name}</h3>
-        <h3>{recipeId.dishTypes}</h3>
-        <h3>{recipeId.types}</h3>
-        <p>{recipeId.resume}</p>
-        <p>{recipeId.score}</p>
-        <p>{recipeId.level}</p>
-        <p>{recipeId.steps}</p>
+        <h3>Recipe: "{recipeId.name}"</h3>
+        <h3>Dish types: "{recipeId.dishTypes}"</h3>
+        <h3>Diet types: "{recipeId.types}"</h3>
+        <p>Resume: "{recipeId.resume}"</p>
+        <p>Spoonacular score: "{recipeId.score}"</p>
+        <p>Health level: "{recipeId.level}"</p>
+        <p>Steps: "{recipeId.steps[0][0]}"</p>
+        {console.log(recipeId.steps)}
+        {console.log(recipeId.steps[0][0])}
       </div>
       <div>
         <Link to="/home">

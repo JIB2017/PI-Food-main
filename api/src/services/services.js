@@ -25,9 +25,9 @@ const dataAPI = async (next) => {
           resume: el.summary,
           score: el.spoonacularScore,
           level: el.healthScore,
-          steps: el.analyzedInstructions.map((el) =>
-            el.steps ? el.steps : "Sin datos..."
-          ),
+          steps: el.analyzedInstructions.steps
+            ? el.analyzedInstructions.steps
+            : "Sin datos...",
           image: el.image,
           types: el.diets,
           dishTypes: el.dishTypes,
