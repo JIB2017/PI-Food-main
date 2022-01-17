@@ -3,13 +3,22 @@ const service = require("../services/services.js");
 
 const types = async (request, response, next) => {
   try {
-    const getTypes = await service.dataAPI();
+    const getTypes = await service.dataAll();
     let apiTypes = getTypes.map((el) => el.types); // apiTypes = [[varios types], [varios types], [varios types], [varios types]]
     let sinRepetir = apiTypes.flat(1);
+    let array = [];
+
+    for(let i = 0; i < sinRepetir.length; i++) {
+      if(!array.includes(sinRepetir[i])) {
+        array.push(sinRepetir[i]);
+      }
+    }
+    array.push('vegetarian'); // Hardcodeado
+    console.log(array);
 
     // Guardo los modelos con cada uno en la base de datos
-    sinRepetir.forEach((el) => {
-      Type.findOrCreate({
+    array.forEach(async (el) => {
+      await Type.findOrCreate({
         // Type acaba de ser llenado con todos los tipos de dieta sin repetirse
         where: { name: el },
       });

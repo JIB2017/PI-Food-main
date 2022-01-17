@@ -9,6 +9,7 @@ import {
   filterByType,
   filterByApi,
   getDishes,
+  filterByDish,
 } from "../redux/action";
 import Card from "./Card";
 import SearchBar from "./SearchBar";
@@ -48,6 +49,7 @@ export default function Home() {
       dispatch(filterByType(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
+    setPage(1);
   };
 
   const refresh = (e) => {
@@ -63,6 +65,7 @@ export default function Home() {
       dispatch(orderByAlphabet(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
+    setPage(1);
   };
 
   const handleScore = (e) => {
@@ -72,6 +75,7 @@ export default function Home() {
       dispatch(orderByScore(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
+    setPage(1);
   };
 
   const handleApi = (e) => {
@@ -81,6 +85,7 @@ export default function Home() {
       dispatch(filterByApi(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
+    setPage(1);
   };
 
   const handleDishes = (e) => {
@@ -90,6 +95,7 @@ export default function Home() {
       dispatch(filterByDish(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
+    setPage(1);
   };
 
   const paged = (nro) => {
@@ -139,7 +145,7 @@ export default function Home() {
         <option value="API">Filter by API</option>
         <option value="DB">Filter by DB</option>
       </select>
-      <select onChange={getDishes}>
+      <select onChange={handleDishes}>
         <option value="">Filter by Dish</option>
         {dishes?.map((el) => {
           return (
@@ -165,7 +171,7 @@ export default function Home() {
               image={receta.image}
               name={receta.name}
               types={receta.types.map((el) =>
-                el.name ? el.name : "No se pueden mostrar correctamente"
+                el ? el : el.name
               )}
               score={receta.score}
               key={receta.id}

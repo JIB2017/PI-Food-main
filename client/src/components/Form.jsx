@@ -32,7 +32,7 @@ function validate(input) {
   if (!input.steps || !/^[A-Za-z0-9\s]+$/g.test(input.steps)) {
     validation.steps = "Solo valores alfanuméricos";
   }
-  if (!input.types || input.types.length === 0 || input.types.length <= 1) {
+  if (!input.types || input.types.length === 0) {
     validation.types = "Debe Ingresar al menos 2 tipos de dieta";
   }
   return validation;
@@ -65,6 +65,22 @@ export default function Form() {
       })
     );
     setOrder(`Ordenado ${e.target.value}`);
+  };
+
+  const handleTypes = (e) => {
+    setInput({
+      ...input,
+      types: [...input.types, e.target.value],
+    });
+    setOrder(`Ordenado ${e.target.value}`);
+    console.log(input.types);
+  };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setInput({
+      ...input,
+      types: input.types.filter((t) => t !== e.target.value),
+    });
   };
 
   const handleSubmit = (e) => {
@@ -115,15 +131,15 @@ export default function Form() {
           <input
             type="text"
             name="steps"
-            placeholder="Describe every steps of  your recipe"
+            placeholder="Describe every steps of your recipe"
             onChange={handleChange}
           />
           {errors.types && <h4>{errors.types}</h4>}
-          <select name="" onChange={handleChange}>
+          <select name="" onChange={handleTypes}>
             <option value="">Select the diet types</option>
             {types?.map((el) => {
               return (
-                <option value="" name="types" key={el.id}>
+                <option value={el.name} name="types" key={el.id}>
                   {el.name}
                 </option>
               );
@@ -134,7 +150,6 @@ export default function Form() {
           </button>
         </form>
       </div>
-      {console.log(input.types)}
       <div>
         <Link to="/home">
           <button className={styles.btn}>Back to home</button>

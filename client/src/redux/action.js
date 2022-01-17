@@ -62,9 +62,10 @@ export function orderByScore(payload) {
 }
 
 export function addRecipe(payload) {
-  return async function (dispatch) {
-    const json = axios.post("http://localhost:3001/recipe", payload);
-    return json;
+  return function (dispatch) {
+    return axios
+      .post("http://localhost:3001/recipe", payload)
+      .then((res) => dispatch({ type: "ADD_RECIPE", payload: res.data }));
   };
 }
 
@@ -76,8 +77,15 @@ export function filterByApi(payload) {
 }
 
 export function getDishes() {
-  return {
-    type: "GET_DISHES",
+  return function (dispatch) {
+    fetch("http://localhost:3001/dishes")
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch({
+          type: "GET_DISHES",
+          payload: json,
+        });
+      });
   };
 }
 

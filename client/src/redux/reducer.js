@@ -76,31 +76,21 @@ export default function rootReducer(state = initialState, action) {
     case "ADD_RECIPE":
       return {
         ...state,
+        recipes: [...state.recipes, action.payload],
       };
     case "FILTER_BY_API":
       let filter =
         action.payload === "API"
-          ? state.recipes.filter((el) => !el.createdByUser)
-          : state.recipes.filter((el) => el.createdByUser);
+          ? state.auxRecipes.filter((el) => !el.createdByUser)
+          : state.auxRecipes.filter((el) => el.createdByUser);
       return {
         ...state,
         recipes: filter,
       };
     case "GET_DISHES":
-      let allDishes = state.recipes.map((el) => el.dishType);
-      let sinRepetir = allDishes.flat(1);
-      let array = [];
-      for (let i = 0; i < sinRepetir.length; i++) {
-        if (array.includes(sinRepetir[i])) {
-          array.push({
-            id: i + 1,
-            name: sinRepetir[i],
-          });
-        }
-      }
       return {
         ...state,
-        dishes: array,
+        dishes: action.payload,
       };
     case "FILTER_BY_DISH":
       let dish = state.recipes.filter((el) =>
