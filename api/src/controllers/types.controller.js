@@ -14,7 +14,6 @@ const types = async (request, response, next) => {
       }
     }
     array.push('vegetarian'); // Hardcodeado
-    console.log(array);
 
     // Guardo los modelos con cada uno en la base de datos
     array.forEach(async (el) => {

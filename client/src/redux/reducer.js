@@ -93,12 +93,12 @@ export default function rootReducer(state = initialState, action) {
         dishes: action.payload,
       };
     case "FILTER_BY_DISH":
-      let dish = state.recipes.filter((el) =>
+      let dish = state.auxRecipes.filter((el) =>
         el.dishTypes.includes(action.payload)
       );
       return {
         ...state,
-        favourites: dish,
+        recipes: dish,
       };
     default:
       return state;

@@ -29,12 +29,14 @@ const recipeId = async (request, response, next) => {
   try {
     const id = request.params.id;
     const allRecipes = await service.dataAll();
-    const filterById = allRecipes.filter((el) => el.id === id);
-
-    if (filterById) {
-      response.status(200).send(filterById);
-    } else {
-      response.status(500).send("No se encontró la receta");
+ 
+    if (id) {
+      const filterById = allRecipes.filter((el) => el.id == id);
+      if (filterById.length > 0) {
+        response.status(200).send(filterById);
+      } else {
+        response.status(500).send("No se encontró la receta");
+      }
     }
   } catch (error) {
     response.status(500).json({ message: error.message });
@@ -87,7 +89,7 @@ const dishes = async (request, response, next) => {
       finalDishes.push({
         id: i + 1,
         name: sinRepetir[i],
-      })
+      });
     }
     if (finalDishes) response.status(200).send(finalDishes);
   } catch (error) {

@@ -16,17 +16,28 @@ export default function DetailRecipe() {
 
   return (
     <div>
-      <div key={recipeId.id}>
-        <img src={recipeId.image} alt={recipeId.name} width="300px" height="300px"/>
-        <h3>Recipe: "{recipeId.name}"</h3>
-        <h3>Dish types: "{recipeId.dishTypes}"</h3>
-        <h3>Diet types: "{recipeId.types}"</h3>
-        <p>Resume: "{recipeId.resume}"</p>
-        <p>Spoonacular score: "{recipeId.score}"</p>
-        <p>Health level: "{recipeId.level}"</p>
-        <p>Steps: "{recipeId.steps[0][0]}"</p>
-        {console.log(recipeId.steps)}
-        {console.log(recipeId.steps[0][0])}
+      <div key={recipeId[0].id}>
+        <img
+          src={recipeId[0].image}
+          alt={recipeId[0].name}
+          width="300px"
+          height="300px"
+        />
+        <h3>Recipe: "{recipeId[0].name}"</h3>
+        <h3>Dish types: "{recipeId[0].dishTypes}"</h3>
+        <h3>Diet types: "{recipeId[0].types}"</h3>
+        <p>Resume: "{recipeId[0].resume}"</p>
+        <h3>Spoonacular score: "{recipeId[0].score}"</h3>
+        <h3>Health level: "{recipeId[0].level}"</h3>
+        {recipeId[0].steps?.map((el) => {
+          return (
+            <div key={el[0]}>
+              <h3>{el[0]}</h3>
+              <h3>{el[1]}</h3>
+            </div>
+          );
+        })}
+        {console.log(recipeId[0].steps[0])}
       </div>
       <div>
         <Link to="/home">
