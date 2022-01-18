@@ -1,0 +1,30 @@
+img {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 3%;
+}
+
+.gridcontainer {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    grid-auto-flow: dense;
+    float: left;
+    padding: 5px;
+    width: 250px;
+    height: 610px;
+    margin: 15px;
+}
+  
+  .gridcontainer > div {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 30px;
+    border-radius: 30px;
+}
+  
+  .gridcontainer:hover {
+    transform: translateY(-3px);
+}
+

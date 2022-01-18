@@ -116,11 +116,11 @@ export default function Home() {
     <div>
       <SearchBar />
       <Link to="/form">
-        <button>Crear receta</button>
+        <button className={styles.btncreate}>Crear receta</button>
       </Link>
       <h1>Henry Food</h1>
-      <button onClick={refresh}>Refresh</button>
-      <select onChange={handleDiets}>
+      <button className={styles.btn} onClick={refresh}>Refresh</button>
+      <select className={styles.control} onChange={handleDiets}>
         <option value="">Select your diet</option>
         {diets?.map((el) => {
           return (
@@ -130,22 +130,22 @@ export default function Home() {
           );
         })}
       </select>
-      <select onChange={handleOrder}>
+      <select className={styles.control} onChange={handleOrder}>
         <option value="">Order by alphabet</option>
         <option value="A-Z">A-Z</option>
         <option value="Z-A">Z-A</option>
       </select>
-      <select onChange={handleScore}>
+      <select className={styles.control} onChange={handleScore}>
         <option value="">Order by score</option>
         <option value="MIN-MAX">MIN-MAX</option>
         <option value="MAX-MIN">MAX-MIN</option>
       </select>
-      <select onChange={handleApi}>
+      <select className={styles.control} onChange={handleApi}>
         <option value="">Select the filter</option>
         <option value="API">Filter by API</option>
         <option value="DB">Filter by DB</option>
       </select>
-      <select onChange={handleDishes}>
+      <select className={styles.control} onChange={handleDishes}>
         <option value="">Filter by Dish</option>
         {dishes?.map((el) => {
           return (
@@ -157,10 +157,10 @@ export default function Home() {
       </select>
       <h3>Lista de recetas</h3>
       {arrows.previous && (
-        <button onClick={() => handleArrows(page - 1)}>Previous</button>
+        <button className={styles.btn} onClick={() => handleArrows(page - 1)}>Previous</button>
       )}
       {arrows.next && (
-        <button onClick={() => handleArrows(page + 1)}>Next</button>
+        <button className={styles.btn} onClick={() => handleArrows(page + 1)}>Next</button>
       )}
       {<Pagination totalPages={totalPages} page={page} paged={paged} />}
       {pagination?.map((receta) => {
