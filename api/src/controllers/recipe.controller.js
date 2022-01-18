@@ -1,4 +1,4 @@
-const { Recipe, Type } = require("../db");
+const { Recipe, Diet } = require("../db");
 const service = require("../services/services.js");
 const axios = require("axios");
 const { API_KEY } = process.env;
@@ -32,6 +32,7 @@ const recipeId = async (request, response, next) => {
  
     if (id) {
       const filterById = allRecipes.filter((el) => el.id == id);
+      console.log(typeof(filterById[0].diets[0].name));
       if (filterById.length > 0) {
         response.status(200).send(filterById);
       } else {
@@ -45,7 +46,7 @@ const recipeId = async (request, response, next) => {
 
 const create = async (request, response, next) => {
   try {
-    let { id, name, resume, score, level, steps, createdByUser, types } =
+    let { id, name, resume, score, level, steps, createdByUser, diets } =
       request.body;
 
     let recipeCreated = await Recipe.create({
@@ -60,13 +61,12 @@ const create = async (request, response, next) => {
 
     // let formated= Array.isArray(types) ? types: [types];
 
-    let recipeType = await Type.findAll({
-      where: { name: types },
+    let recipeType = await Diet.findAll({
+      where: { name: diets },
     });
-    // console.log(types);
-    console.log(types);
+    console.log(diets);
 
-    await recipeCreated.addType(recipeType);
+    await recipeCreated.addDiet(recipeType);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

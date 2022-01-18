@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   getAllRecipes,
-  getTypes,
+  getDiets,
   orderByAlphabet,
   orderByScore,
-  filterByType,
+  filterByDiet,
   filterByApi,
   getDishes,
   filterByDish,
@@ -18,7 +18,7 @@ import Pagination from "./Pagination";
 
 export default function Home() {
   const recipes = useSelector((state) => state.recipes);
-  const types = useSelector((state) => state.types);
+  const diets = useSelector((state) => state.diets);
   const dishes = useSelector((state) => state.dishes);
   const dispatch = useDispatch();
   const [order, setOrder] = useState("");
@@ -42,11 +42,11 @@ export default function Home() {
     setPage(nro);
   };
 
-  const handleTypes = (e) => {
+  const handleDiets = (e) => {
     e.preventDefault();
     const value = e.target.value;
     if (value !== "") {
-      dispatch(filterByType(value));
+      dispatch(filterByDiet(value));
     }
     setOrder(`Ordenado ${e.target.value}`);
     setPage(1);
@@ -104,7 +104,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getAllRecipes());
-    dispatch(getTypes());
+    dispatch(getDiets());
     dispatch(getDishes());
   }, [dispatch]);
 
@@ -120,9 +120,9 @@ export default function Home() {
       </Link>
       <h1>Henry Food</h1>
       <button onClick={refresh}>Refresh</button>
-      <select onChange={handleTypes}>
+      <select onChange={handleDiets}>
         <option value="">Select your diet</option>
-        {types?.map((el) => {
+        {diets?.map((el) => {
           return (
             <option value={el.name} key={el.id}>
               {el.name}
@@ -170,9 +170,11 @@ export default function Home() {
               id={receta.id}
               image={receta.image}
               name={receta.name}
-              types={receta.types.map((el) =>
-                el ? el : el.name
-              )}
+              diets={
+                typeof receta.diets[0] === "string"
+                  ? receta.diets.map((el) => el)
+                  : receta.diets.map((el) => el.name)
+              }
               score={receta.score}
               key={receta.id}
             />

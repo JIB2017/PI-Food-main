@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Recipe, Type } = require("../db");
+const { Recipe, Diet } = require("../db");
 const { API_KEY } = process.env;
 
 const getDataAPI = async (next) => {
@@ -14,14 +14,14 @@ const getDataAPI = async (next) => {
         return {
           id: el.id,
           name: el.title,
-          resume: el.summary,
+          resume: el.summary.replace(/<[^>]*>?/g, ""),
           score: el.spoonacularScore,
           level: el.healthScore,
           steps: el.analyzedInstructions[0]
             ? el.analyzedInstructions[0].steps.map((el) => [el.number, el.step])
             : "Sin datos...",
           image: el.image,
-          types: el.diets,
+          diets: el.diets,
           dishTypes: el.dishTypes,
         };
       });
@@ -37,7 +37,7 @@ const getDataDB = async () => {
   try {
     return await Recipe.findAll({
       include: {
-        model: Type,
+        model: Diet,
         attributes: ["name"],
         through: { attributes: [] },
       },

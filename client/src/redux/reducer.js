@@ -2,8 +2,7 @@ const initialState = {
   recipes: [],
   auxRecipes: [],
   refresh: [],
-  favourites: [],
-  types: [],
+  diets: [],
   dishes: [],
 };
 
@@ -26,14 +25,16 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         auxRecipes: action.payload,
       };
-    case "GET_TYPES":
+    case "GET_DIETS":
       return {
         ...state,
-        types: action.payload,
+        diets: action.payload,
       };
-    case "FILTER_BY_TYPE":
-      let filtered = state.recipes.filter((el) =>
-        el.types.includes(action.payload)
+    case "FILTER_BY_DIET":
+      let filtered = state.auxRecipes.filter((el) =>
+        el.diets
+          ? el.diets.includes(action.payload)
+          : el.map((t) => t.name.includes(action.payload))
       );
       return {
         ...state,
