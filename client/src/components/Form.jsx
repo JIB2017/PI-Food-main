@@ -69,7 +69,7 @@ export default function Form() {
         [e.target.name]: e.target.value,
       })
     );
-    setOrder(`Ordenado ${e.target.value}`);
+    setOrder(`Ordenado ${e.target.value} + ${order}`);
   };
 
   const handleDiets = (e) => {
@@ -77,7 +77,7 @@ export default function Form() {
       ...input,
       diets: [...input.diets, e.target.value],
     });
-    setOrder(`Ordenado ${e.target.value}`);
+    setOrder(`Ordenado ${e.target.value} + ${order}`);
   };
   const handleDelete = (e) => {
     // e.preventDefault();
@@ -85,7 +85,7 @@ export default function Form() {
       ...input,
       diets: input.diets.filter((t) => t !== e.target.value),
     });
-    setOrder(`Ordenado ${e.target.value}`);
+    setOrder(`Ordenado ${e.target.value} + ${order}`);
   };
 
   const handleSubmit = () => {
@@ -126,6 +126,7 @@ export default function Form() {
             type="text"
             name="name"
             placeholder="Choose the name for your recipe"
+            className={styles.control}
             onChange={handleChange}
           />
           {/* RESÚMEN DE LA RECETA */}
@@ -134,6 +135,7 @@ export default function Form() {
             type="text"
             name="resume"
             placeholder="Write a description for your recipe"
+            className={styles.control}
             onChange={handleChange}
           />
           {/* PUNTUACIÓN */}
@@ -142,6 +144,7 @@ export default function Form() {
             type="text"
             name="score"
             placeholder="Choose a spoonacular score"
+            className={styles.control}
             onChange={handleChange}
           />
           {/* NIVEL DE SALUD */}
@@ -150,6 +153,7 @@ export default function Form() {
             type="text"
             name="level"
             placeholder="Choose the health level of your recipe"
+            className={styles.control}
             onChange={handleChange}
           />
           {/* EL PASO A PASO DE LAS RECETAS */}
@@ -158,6 +162,7 @@ export default function Form() {
             type="text"
             name="steps"
             placeholder="Describe every steps of your recipe"
+            className={styles.control}
             onChange={handleChange}
           />
           {/* LISTA DE LOS TIPOS DE DIETA */}

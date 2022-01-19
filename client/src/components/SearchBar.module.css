@@ -1,7 +1,7 @@
 .searchBar {
   appearance: none;
   background-color: transparent;
-  border: 2px solid #ffa500;
+  border: 2px solid #ffba3a;
   border-radius: 15px;
   box-sizing: border-box;
   color: rgb(255, 240, 24);
@@ -35,7 +35,7 @@
 
 .searchBar:focus {
   width: 30%;
-  border: 2px solid #4caf50;
+  border: 2px solid #ffa500;
 }
 
 .buttonSearch {
@@ -73,7 +73,7 @@
 }
 
 .buttonSearch:hover {
-  color: rgb(255, 0, 0);
+  color: #ffffff;
   background-color: #ffa500;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(-2px);

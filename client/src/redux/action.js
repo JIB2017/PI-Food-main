@@ -1,59 +1,59 @@
 import axios from "axios";
 
 export function getAllRecipes() {
-  try {
-    return function (dispatch) {
+  return function (dispatch) {
+    try {
       return fetch(`http://localhost:3001/recipes`)
         .then((res) => res.json())
         .then((json) => {
           dispatch({ type: "GET_ALL_RECIPES", payload: json });
         });
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function getRecipesName(name) {
-  try {
-    return function (dispatch) {
+  return function (dispatch) {
+    try {
       return fetch(`http://localhost:3001/recipes?name=${name}`)
         .then((res) => res.json())
         .then((json) => {
           dispatch({ type: "GET_RECIPES_NAME", payload: json });
         });
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function getRecipe(id) {
-  try {
-    return function (dispatch) {
+  return function (dispatch) {
+    try {
       return fetch(`http://localhost:3001/recipes/${id}`)
         .then((res) => res.json())
         .then((json) => {
           dispatch({ type: "GET_RECIPE", payload: json });
         });
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function getDiets() {
-  try {
-    return function (dispatch) {
+  return function (dispatch) {
+    try {
       return fetch(`http://localhost:3001/types`)
         .then((res) => res.json())
         .then((json) => {
           dispatch({ type: "GET_DIETS", payload: json });
         });
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function filterByDiet(payload) {
@@ -82,14 +82,14 @@ export function orderByScore(payload) {
 }
 
 export function addRecipe(payload) {
-  try {
-    return async function (dispatch) {
+  return async function (dispatch) {
+    try {
       const res = await axios.post("http://localhost:3001/recipe", payload);
       return res;
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function filterByApi(payload) {
@@ -100,8 +100,8 @@ export function filterByApi(payload) {
 }
 
 export function getDishes() {
-  try {
-    return function (dispatch) {
+  return function (dispatch) {
+    try {
       fetch("http://localhost:3001/dishes")
         .then((res) => res.json())
         .then((json) => {
@@ -110,10 +110,10 @@ export function getDishes() {
             payload: json,
           });
         });
-    };
-  } catch (error) {
-    console.error(error);
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export function filterByDish(payload) {

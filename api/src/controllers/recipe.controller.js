@@ -32,7 +32,7 @@ const recipeId = async (request, response, next) => {
  
     if (id) {
       const filterById = allRecipes.filter((el) => el.id == id);
-      console.log(typeof(filterById[0].diets[0].name));
+      console.log(typeof(filterById[0]));
       if (filterById.length > 0) {
         response.status(200).send(filterById);
       } else {
@@ -76,7 +76,8 @@ const create = async (request, response, next) => {
 const dishes = async (request, response, next) => {
   try {
     const allRecipes = await service.dataAll();
-    const allDishes = allRecipes.map((el) => el.dishTypes);
+    const recipesApi = allRecipes.filter((el) => !el.createdByUser)
+    const allDishes = recipesApi.map((el) => el.dishTypes);
     const allDishes2 = allDishes.flat();
     const sinRepetir = [];
     for (let i = 0; i < allDishes2.length; i++) {

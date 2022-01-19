@@ -34,7 +34,7 @@ export default function rootReducer(state = initialState, action) {
       let filtered = state.auxRecipes.filter((el) =>
         el.diets
           ? el.diets.includes(action.payload)
-          : el.map((t) => t.name.includes(action.payload))
+          : el.diets.map((t) => t.name.includes(action.payload))
       );
       return {
         ...state,
@@ -81,7 +81,9 @@ export default function rootReducer(state = initialState, action) {
       };
     case "FILTER_BY_API":
       let filter =
-        action.payload === "API"
+        action.payload === "ALL"
+          ? state.auxRecipes
+          : action.payload === "API"
           ? state.auxRecipes.filter((el) => !el.createdByUser)
           : state.auxRecipes.filter((el) => el.createdByUser);
       return {
@@ -95,7 +97,7 @@ export default function rootReducer(state = initialState, action) {
       };
     case "FILTER_BY_DISH":
       let dish = state.auxRecipes.filter((el) =>
-        el.dishTypes.includes(action.payload)
+        el.dishTypes?.includes(action.payload)
       );
       return {
         ...state,

@@ -25,30 +25,32 @@ export default function DetailRecipe() {
             width="300px"
             height="300px"
           />
-          <p>Recipe: "{recipeId[0].name}"</p>
+          <h5>Recipe: "{recipeId[0].name}"</h5>
           {recipeId[0].dishTypes !== "" && (
-            <p>Dish types: "{recipeId[0].dishTypes}"</p>
+            <h5>Dish types: "{recipeId[0].dishTypes}"</h5>
           )}
-          <p>
-            Diet types:
-            {typeof recipeId[0].diets[0] === "string"
-              ? recipeId[0].diets.map((el) => el)
-              : recipeId[0].diets.map((el) => el.name)}
-          </p>
+          <h5>
+            Types of diets:
+            {recipeId[0].diets[0].length > 0
+              ? typeof recipeId[0].diets[0] === "string"
+                ? recipeId[0].diets.map((el) => el)
+                : recipeId[0].diets.map((el) => el.name)
+              : "No data provided"}
+          </h5>
           <p>Resume: "{recipeId[0].resume}"</p>
-          <p>Spoonacular score: "{recipeId[0].score}"</p>
-          <p>Health level: "{recipeId[0].level}"</p>
+          <h5>Spoonacular score: "{recipeId[0].score}"</h5>
+          <h5>Health level: "{recipeId[0].level}"</h5>
           {typeof recipeId[0].steps === "string"
             ? recipeId[0].steps
             : recipeId[0].steps.map((el) => {
                 return (
                   <div key={el[0]}>
-                    <p>{el[0]}</p>
-                    <p>{el[1]}</p>
+                    <h5>Step {el[0]}:</h5>
+                    <h5>{el[1]}</h5>
                   </div>
                 );
               })}
-          {console.log(recipeId[0].steps[0])}
+          {console.log(recipeId[0])}
         </div>
       </div>
       <div>

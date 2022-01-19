@@ -112,3 +112,10 @@ h1 {
   box-shadow: none;
   transform: translateY(0);
 }
+
+.grids {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 25% 25% 25% 25%;
+  gap: 20px;
+}
