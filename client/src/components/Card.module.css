@@ -8,7 +8,7 @@ img {
 .gridcontainer {
   position: relative;
   display: grid;
-  gap: 1rem;
+  gap: 2rem;
   grid-auto-flow: dense;
   float: left;
   padding: 5px;

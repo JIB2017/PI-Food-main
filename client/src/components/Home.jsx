@@ -181,7 +181,7 @@ export default function Home() {
       {<Pagination totalPages={totalPages} page={page} paged={paged} />}
       {pagination?.map((receta) => {
         return (
-          <div className={styles.grids} key={receta.id}>
+          <div key={receta.id}>
             <Card
               id={receta.id}
               image={receta.image}

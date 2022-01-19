@@ -31,7 +31,7 @@ export default function DetailRecipe() {
           )}
           <h5>
             Types of diets:
-            {recipeId[0].diets[0].length > 0
+            {recipeId[0].diets.length > 0
               ? typeof recipeId[0].diets[0] === "string"
                 ? recipeId[0].diets.map((el) => el)
                 : recipeId[0].diets.map((el) => el.name)
