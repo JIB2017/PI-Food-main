@@ -19,9 +19,7 @@ export function getRecipesName(name) {
     try {
       return fetch(`http://localhost:3001/recipes?name=${name}`)
         .then((res) => res.json())
-        .then((json) => {
-          dispatch({ type: "GET_RECIPES_NAME", payload: json });
-        });
+        .then((json) => dispatch({ type: "GET_RECIPES_NAME", payload: json }));
     } catch (error) {
       console.error(error);
     }

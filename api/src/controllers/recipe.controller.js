@@ -16,6 +16,8 @@ const recipes = async (request, response, next) => {
       );
       if (recipeName.length) {
         response.status(200).send(recipeName);
+      } else {
+        response.status()
       }
     } else {
       response.status(200).send(allRecipes);
@@ -36,7 +38,7 @@ const recipeId = async (request, response, next) => {
       if (filterById.length > 0) {
         response.status(200).send(filterById);
       } else {
-        response.status(500).send("No se encontró la receta");
+        response.status(404).send("No se encontró la receta");
       }
     }
   } catch (error) {
@@ -70,7 +72,7 @@ const create = async (request, response, next) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-  response.status(200).send("recipeType");
+  response.status(201).send("recipeType");
 };
 
 const dishes = async (request, response, next) => {

@@ -116,7 +116,7 @@ export default function Home() {
 
   return (
     <div>
-      <SearchBar />
+      <SearchBar setPage={setPage}/>
       <Link to="/form">
         <button className={styles.btncreate}>Crear receta</button>
       </Link>
