@@ -77,11 +77,13 @@ const create = async (request, response, next) => {
 
 const dishes = async (request, response, next) => {
   try {
-    const allRecipes = await service.dataAll();
-    const recipesApi = allRecipes.filter((el) => !el.createdByUser)
-    const allDishes = recipesApi.map((el) => el.dishTypes);
+    const dataApi = await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+    );
+    const allDishes = dataApi.data.results.map((el) => el.dishTypes);
     const allDishes2 = allDishes.flat();
     const sinRepetir = [];
+    
     for (let i = 0; i < allDishes2.length; i++) {
       if (!sinRepetir.includes(allDishes2[i])) {
         sinRepetir.push(allDishes2[i]);

@@ -10,7 +10,7 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 router.get("/recipes", recipe.recipes);
 router.get("/recipes/:id", recipe.recipeId);
-router.get("/types", diets.diets);
+router.get("/diets", diets.diets);
 router.get("/dishes", recipe.dishes);
 router.post("/recipe", recipe.create);
 

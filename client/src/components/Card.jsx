@@ -9,12 +9,10 @@ export default function Card({ id, image, name, diets, score, dishes }) {
         <Link to={`/${id}`}>
           <img src={image} alt={name} />
         </Link>
-        <div className={styles.desc}>
           <h6>{`Recipe: ${name}`}</h6>
           <h6>{`Types diets: ${diets}`}</h6>
           <h6>{`Spoonacular score: ${score}`}</h6>
           <h6>{`Types of dishes: ${dishes}`}</h6>
-        </div>
       </div>
     </div>
   );

@@ -111,8 +111,7 @@ export default function Form() {
   useEffect(() => {
     dispatch(getDiets());
   }, [dispatch]);
-  console.log(input.types);
-  console.log(Object.keys(errors));
+  
   return (
     <div>
       <div>

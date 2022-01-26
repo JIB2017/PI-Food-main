@@ -43,7 +43,7 @@ export function getRecipe(id) {
 export function getDiets() {
   return function (dispatch) {
     try {
-      return fetch(`http://localhost:3001/types`)
+      return fetch(`http://localhost:3001/diets`)
         .then((res) => res.json())
         .then((json) => {
           dispatch({ type: "GET_DIETS", payload: json });

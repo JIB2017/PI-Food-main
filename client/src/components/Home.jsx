@@ -116,7 +116,7 @@ export default function Home() {
 
   return (
     <div>
-      <SearchBar setPage={setPage}/>
+      <SearchBar setPage={setPage} />
       <Link to="/form">
         <button className={styles.btncreate}>Crear receta</button>
       </Link>
@@ -179,27 +179,31 @@ export default function Home() {
       )}
       {/* OFFSET PAGINATION */}
       {<Pagination totalPages={totalPages} page={page} paged={paged} />}
-      {pagination?.map((receta) => {
-        return (
-          <div key={receta.id}>
-            <Card
-              id={receta.id}
-              image={receta.image}
-              name={receta.name}
-              diets={
-                receta.diets.length > 0
-                  ? typeof receta.diets[0] === "string"
-                    ? receta.diets.map((el) => el)
-                    : receta.diets.map((el) => el.name)
-                  : "No data provided"
-              }
-              score={receta.score}
-              dishes={receta.dishTypes ? receta.dishTypes : "Data not provided"}
-              key={receta.id}
-            />
-          </div>
-        );
-      })}
+      <div className={styles.cards}>
+        {pagination?.map((receta) => {
+          return (
+            <div key={receta.id}>
+              <Card
+                id={receta.id}
+                image={receta.image}
+                name={receta.name}
+                diets={
+                  receta.diets.length > 0
+                    ? typeof receta.diets[0] === "string"
+                      ? receta.diets.map((el) => el)
+                      : receta.diets.map((el) => el.name)
+                    : "No data provided"
+                }
+                score={receta.score}
+                dishes={
+                  receta.dishTypes ? receta.dishTypes : "Data not provided"
+                }
+                key={receta.id}
+              />
+            </div>
+          );
+        })}
+      </div>
       {console.log(`${recipes.length}`)}
     </div>
   );

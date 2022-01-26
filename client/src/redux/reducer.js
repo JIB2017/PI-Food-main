@@ -32,9 +32,9 @@ export default function rootReducer(state = initialState, action) {
       };
     case "FILTER_BY_DIET":
       let filtered = state.auxRecipes.filter((el) =>
-        el.diets
-          ? el.diets.includes(action.payload)
-          : el.diets.map((t) => t.name.includes(action.payload))
+        typeof el.diets[0] === "string"
+          ? el.diets?.includes(action.payload)
+          : el.diets?.map((t) => t.name === action.payload)
       );
       return {
         ...state,

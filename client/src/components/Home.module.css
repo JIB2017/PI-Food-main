@@ -9,6 +9,13 @@ h1 {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
+.cards {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 18% 18% 18% 18% 18%;
+  gap: 3em;
+}
+
 .control {
   padding: 10px;
   border: 2px solid #ffa500;
