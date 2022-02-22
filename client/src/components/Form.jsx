@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 import { getDiets, addRecipe } from "../redux/action";
+
 import styles from "./Form.module.css";
 
 function validate(input) {
@@ -80,19 +83,22 @@ export default function Form() {
     setOrder(`Ordenado ${e.target.value} + ${order}`);
   };
   const handleDelete = (e) => {
-    // e.preventDefault();
     setInput({
       ...input,
-      diets: input.diets.filter((t) => t !== e.target.value),
+      diets: input.diets.filter((t) => t !== e),
     });
-    setOrder(`Ordenado ${e.target.value} + ${order}`);
   };
 
   const handleSubmit = () => {
     // e.preventDefault();
     if (Object.keys(errors).length === 0) {
       dispatch(addRecipe(input));
-      alert("Felicidades! Has construido un castillo");
+      Swal.fire({
+        title: "Congratulations!",
+        text: "You add a recipe!",
+        icon: "success",
+        confirmButtonText: "Cool",
+      });
       setInput({
         name: "",
         resume: "",
@@ -101,17 +107,22 @@ export default function Form() {
         steps: "",
         diets: [],
       });
-      navigate("/home")
+      navigate("/home");
     } else {
-      alert("Todos los campos tienen que estar completos");
+      Swal.fire({
+        title: "Error!",
+        text: "All fields must be filled",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
     }
-
   };
 
   useEffect(() => {
     dispatch(getDiets());
-  }, [dispatch]);
-  
+    setErrors(validate(input));
+  }, [dispatch, input]);
+
   return (
     <div>
       <div>
@@ -185,12 +196,18 @@ export default function Form() {
       {/* DIETAS QUE EL USUARIO VA AGREGANDO */}
       {input.diets?.map((el) => {
         return (
-          <div>
+          <div key={el}>
             <h5>{el}</h5>
-            <button className={styles.delete} onClick={(el) => handleDelete(el)}>X</button>
+            <button
+              className={styles.delete}
+              onClick={() => handleDelete(el)}
+            >
+              X
+            </button>
           </div>
         );
       })}
+      {console.log(input.diets)}
       {/* BOTÓN PARA VOLVER AL HOME */}
       <div>
         <Link to="/home">

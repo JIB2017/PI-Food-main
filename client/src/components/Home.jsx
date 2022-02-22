@@ -15,6 +15,7 @@ import Card from "./Card";
 import SearchBar from "./SearchBar";
 import styles from "./Home.module.css";
 import Pagination from "./Pagination";
+import NavBar from "./NavBar";
 
 export default function Home() {
   // ESTADOS LOCALES
@@ -116,10 +117,11 @@ export default function Home() {
 
   return (
     <div>
-      <SearchBar setPage={setPage} />
+      <NavBar setPage={setPage} />
+      {/* <SearchBar setPage={setPage} />
       <Link to="/form">
         <button className={styles.btncreate}>Crear receta</button>
-      </Link>
+      </Link> */}
       <h1>Henry Food</h1>
       <button className={styles.btn} onClick={refresh}>
         Refresh
@@ -190,8 +192,8 @@ export default function Home() {
                 diets={
                   receta.diets.length > 0
                     ? typeof receta.diets[0] === "string"
-                      ? receta.diets.map((el) => el)
-                      : receta.diets.map((el) => el.name)
+                      ? receta.diets.map((el) => el) // db
+                      : receta.diets.map((el) => el.name) // api
                     : "No data provided"
                 }
                 score={receta.score}
@@ -204,7 +206,6 @@ export default function Home() {
           );
         })}
       </div>
-      {console.log(`${recipes.length}`)}
     </div>
   );
 }

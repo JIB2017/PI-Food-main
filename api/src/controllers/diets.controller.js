@@ -1,21 +1,15 @@
 const { Diet } = require("../db");
 const axios = require("axios");
-const { API_KEY } = process.env;
+const { API_KEY, URL, ADDITIONAL_URL } = process.env;
 
 const diets = async (request, response, next) => {
   try {
     const getTypes = await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+      `${URL}?apiKey=${API_KEY}${ADDITIONAL_URL}`
     );
     let apiTypes = getTypes.data.results.map((el) => el.diets); // apiTypes = [[varios types], [varios types], [varios types], [varios types]]
-    let sinRepetir = apiTypes.flat();
-    // let array = [];
-
-    // for (let i = 0; i < sinRepetir.length; i++) {
-    //   if (!array.includes(sinRepetir[i])) {
-    //     array.push(sinRepetir[i]);
-    //   }
-    // }
+    let sinRepetir = apiTypes.flat(); // lo aplana
+    
     sinRepetir.push("vegetarian"); // Hardcodeado
 
     // Guardo los modelos con cada uno en la base de datos

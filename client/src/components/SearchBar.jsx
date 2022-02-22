@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { getRecipesName } from "../redux/action";
-import styles from "./SearchBar.module.css";
 
 export default function SearchBar({ setPage }) {
   const [input, setInput] = useState("");
@@ -21,25 +21,21 @@ export default function SearchBar({ setPage }) {
       // si no existe mando el alert
       // si el input está vacío mando el alert
     } else {
-      alert("It can't be empty");
+      Swal.fire({
+        title: 'Error!',
+        text: 'It cannot be empty',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      })
     }
   };
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search a recipe here..."
-        className={styles.searchBar}
-        onChange={handleChange}
-      />
-      <button
-        type="submit"
-        className={styles.buttonSearch}
-        onClick={handleSubmit}
-      >
-        Buscar
-      </button>
+      <form className="d-flex">
+        <input className="form-control me-2" type="search" placeholder="Search recipe" aria-label="Search" onChange={handleChange}/>
+        <button className="btn btn-outline-warning" type="submit" onClick={handleSubmit}>Search</button>
+      </form>
     </div>
   );
 }
