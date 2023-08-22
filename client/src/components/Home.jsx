@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   getAllRecipes,
   getDiets,
@@ -12,7 +11,6 @@ import {
   filterByDish,
 } from "../redux/action";
 import Card from "./Card";
-import SearchBar from "./SearchBar";
 import styles from "./Home.module.css";
 import Pagination from "./Pagination";
 import NavBar from "./NavBar";
@@ -118,10 +116,6 @@ export default function Home() {
   return (
     <div>
       <NavBar setPage={setPage} />
-      {/* <SearchBar setPage={setPage} />
-      <Link to="/form">
-        <button className={styles.btncreate}>Crear receta</button>
-      </Link> */}
       <h1>Henry Food</h1>
       <button className={styles.btn} onClick={refresh}>
         Refresh

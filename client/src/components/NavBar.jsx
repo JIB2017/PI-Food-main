@@ -50,7 +50,7 @@ export default function NavBar({ setPage }) {
               </li>
               <li>
                 <Link className="dropdown-item" to="/form">
-                  Create dog
+                  Add recipe
                 </Link>
               </li>
               <hr
@@ -63,7 +63,7 @@ export default function NavBar({ setPage }) {
                 <>
                   <li>
                     <button className="dropdown-item" onClick={signup}>
-                      Sing Up
+                      Sign Up
                     </button>
                   </li>
                   <li>
